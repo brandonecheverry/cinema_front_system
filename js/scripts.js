@@ -4,7 +4,6 @@ document.getElementById('userForm').addEventListener('submit', async function (e
     const email = document.getElementById('email').value;
 
     try {
-        console.log(body)
         const response = await fetch('http://127.0.0.1:5000/users', {
             method: 'POST',
             headers: {
@@ -14,16 +13,18 @@ document.getElementById('userForm').addEventListener('submit', async function (e
         });
 
         if (!response.ok) {
-            throw new Error('Error en la solicitud');
+            const errorText = await response.text();
+            throw new Error(errorText);
         }
 
         const result = await response.json();
         alert(result.message);
     } catch (error) {
         console.error('Error:', error);
-        alert('Hubo un problema al registrar el usuario.');
+        alert('Hubo un problema al registrar el usuario. Detalles del error: ' + error.message);
     }
 });
+
 
 document.getElementById('movieForm').addEventListener('submit', async function (event) {
     event.preventDefault();
